@@ -1,13 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateLoanDto } from './dto/requests/create-loan.dto';
 import { Loan } from './entities/loan.entity';
 
 @Injectable()
 export class LoanService {
+  logger: Logger;
   private loans: Loan[] = [];
   private id = 0;
 
+  constructor() {
+    this.logger = new Logger('LoanService');
+  }
   create(createLoanData: CreateLoanDto) {
+    this.logger.log(`Creating a new loan: ${JSON.stringify(createLoanData)}`);
     // Criar uma entrada no DB
     const loan: Loan = {
       id: this.id,
@@ -32,10 +37,22 @@ export class LoanService {
 
   // TODO: implementar o update
   update(id: number, updateLoanDto: any) {
+    const loan = this.findOne(id);
+    this.loans = this.loans.map((v) => {
+      if (v.id === id) {
+        return {
+          ...loan,
+          ...updateLoanDto,
+        };
+      }
+      return v;
+    });
     return `This action updates a #${id} loan`;
   }
   // TODO : implementar o remove
   remove(id: number) {
-    return `This action removes a #${id} loan`;
+    const loan = this.findOne(id);
+    this.loans = this.loans.filter((v) => v.id !== id);
+    return loan;
   }
 }
