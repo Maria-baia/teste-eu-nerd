@@ -9,6 +9,7 @@ export class LoanService {
 
   create(createLoanData: CreateLoanDto) {
     // Criar uma entrada no DB
+    log(message:"teste");
     const loan: Loan = {
       id: this.id,
       category: createLoanData.category,
@@ -32,10 +33,22 @@ export class LoanService {
 
   // TODO: implementar o update
   update(id: number, updateLoanDto: any) {
+    const loan = this.findOne(id);
+    this.loans = this.loans.map((v) => {
+      if (v.id === id) {
+        return {
+          ...loan,
+          ...updateLoanDto,
+        };
+      }
+      return v;
+    });
     return `This action updates a #${id} loan`;
   }
   // TODO : implementar o remove
   remove(id: number) {
-    return `This action removes a #${id} loan`;
+    const loan = this.findOne(id);
+    this.loans = this.loans.filter((v) => v.id !== id);
+    return loan;
   }
 }
