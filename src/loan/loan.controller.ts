@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { LoanService } from './loan.service';
 import { CreateLoanDto } from './dto/requests/create-loan.dto';
-// import { UpdateLoanDto } from './dto/update-loan.dto';
+import { UpdateLoanDto } from './dto/update/update-loan.dto';
 
 @Controller('loan')
 export class LoanController {
@@ -30,10 +30,10 @@ export class LoanController {
     return this.loanService.findOne(+id);
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateLoanDto: UpdateLoanDto) {
-  //   return this.loanService.update(+id, updateLoanDto);
-  // }
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateLoanDto: UpdateLoanDto) {
+    return this.loanService.update(+id, updateLoanDto);
+  }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
