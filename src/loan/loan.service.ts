@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { Category } from './dto/category.dto';
 import { CreateLoanDto } from './dto/requests/create-loan.dto';
 import { Loan } from './entities/loan.entity';
 
@@ -28,7 +29,19 @@ export class LoanService {
   findAll() {
     // TODO: ordenar os loans por categoria e por data de expiração
     // TODO: adicionar a lista ao fake DB
-    return this.loans;
+    const loans = this.loans.sort(function (a, b) {
+      const nameA = a.category.toUpperCase(); // ignore upper and lowercase
+      const nameB = b.category.toUpperCase(); // ignore upper and lowercase
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    });
+    console.log(loans);
+    return loans;
   }
 
   findOne(id: number) {
