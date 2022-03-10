@@ -23,6 +23,12 @@ export class LoanService {
   findAll() {
     // TODO: ordenar os loans por categoria e por data de expiração
     // TODO: adicionar a lista ao fake DB
+    m;
+    a;
+    r;
+    i;
+    a;
+    r;
     return this.loans;
   }
 
