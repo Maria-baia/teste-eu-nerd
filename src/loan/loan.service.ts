@@ -1,15 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateLoanDto } from './dto/requests/create-loan.dto';
 import { Loan } from './entities/loan.entity';
 
 @Injectable()
 export class LoanService {
+  logger: Logger;
   private loans: Loan[] = [];
   private id = 0;
 
+  constructor() {
+    this.logger = new Logger('LoanService');
+  }
   create(createLoanData: CreateLoanDto) {
+    this.logger.log(`Creating a new loan: ${JSON.stringify(createLoanData)}`);
     // Criar uma entrada no DB
-    log(message:"teste");
     const loan: Loan = {
       id: this.id,
       category: createLoanData.category,
