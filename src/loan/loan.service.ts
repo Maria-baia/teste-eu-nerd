@@ -1,5 +1,4 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Category } from './dto/category.dto';
 import { CreateLoanDto } from './dto/requests/create-loan.dto';
 import { Loan } from './entities/loan.entity';
 import { UpdateLoanDto } from './dto/update/update-loan.dto';
@@ -16,7 +15,6 @@ export class LoanService {
 
   create(createLoanData: CreateLoanDto) {
     this.logger.log(`Creating a new loan: ${JSON.stringify(createLoanData)}`);
-    // Criar uma entrada no DB
     const loan: Loan = {
       id: this.id,
       category: createLoanData.category,
@@ -29,20 +27,30 @@ export class LoanService {
   }
 
   findAll() {
-    // TODO: ordenar os loans por categoria e por data de expiração
-    // TODO: adicionar a lista ao fake DB
-    const loans = this.loans.sort(function (a, b) {
-      const nameA = a.category.toUpperCase(); // ignore upper and lowercase
-      const nameB = b.category.toUpperCase(); // ignore upper and lowercase
-      if (nameA < nameB) {
+    let loans = this.loans.sort(function (a, b) {
+      const categoryA = a.category.toUpperCase();
+      const categoryB = b.category.toUpperCase();
+      if (categoryA < categoryB) {
         return -1;
       }
-      if (nameA > nameB) {
+      if (categoryA > categoryB) {
         return 1;
       }
       return 0;
     });
-    console.log(loans);
+
+    loans = loans.sort(function (a, b) {
+      const expiresA = a.expiresAt;
+      const expiresB = b.expiresAt;
+      if (expiresA < expiresB) {
+        return -1;
+      }
+      if (expiresA > expiresB) {
+        return 1;
+      }
+      return 0;
+    });
+
     return loans;
   }
 
